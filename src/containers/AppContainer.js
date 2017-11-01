@@ -2,33 +2,49 @@ import React from 'react'
 import { Container, Header, Tab } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { switchTab, showMiniPreview } from './actions'
-import { ListContainer } from 'ListContainer'
-import { itemProps } from '../prop-types/itemProps'
+import { switchTab, showMiniPreview, fetchLatestGiphies } from '../actions'
+import ListContainer from './ListContainer'
+import itemProps from '../prop-types/itemProps'
 
 
-class App extends Component {
-  tabPanes =[
-    {
-      menuItem: 'Puppies',
-      render: () => <Tab.Pane loading><ListContainer onShowMiniPreview={this.pro} items={this.props.puppies} /></Tab.Pane>
-    },
-    {
-      menuItem: 'Kitties',
-      render: () => <Tab.Pane loading><ListContainer items={this.props.kitties} /></Tab.Pane>
-    }
-  ]
-
-  handleSwitchTab = (e, {activeTab}) => this.props.dispatchOnSwitchTab(activeTab)
-
-  handleShowMiniPreview = (e, {previewObj}) => this.props.dispatchOnShowMiniPreview(previewObj)
+class AppContainer extends React.Component {
 
   static propTypes = {
     dispatchOnSwitchTab: PropTypes.func,
     dispatchOnShowMiniPreview: PropTypes.func,
+    dispatchRequestPuppies: PropTypes.func,
+    dispatchRequestKitties: PropTypes.func,
     activeTab: PropTypes.number,
     puppies: PropTypes.arrayOf(itemProps),
     kitties: PropTypes.arrayOf(itemProps)
+  }
+
+  constructor(props) {
+    super(props);
+    this.handleSwitchTab = this._handleSwitchTab.bind(this)
+  }
+
+  tabPanes =[
+    {
+      menuItem: 'Puppies',
+      render: () => <Tab.Pane loading><ListContainer onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} /></Tab.Pane>
+    },
+    {
+      menuItem: 'Kitties',
+      render: () => <Tab.Pane loading><ListContainer onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} /></Tab.Pane>
+    }
+  ]
+
+  _handleSwitchTab(e, {activeTab}) {
+    this.props.dispatchOnSwitchTab(activeTab)
+  }
+
+  handleShowMiniPreview(e, {previewObj}) {
+    this.props.dispatchOnShowMiniPreview(previewObj)
+  }
+
+  componentDidMount() {
+    fetchLatestGiphies('Puppies')
   }
 
   render() {
@@ -43,20 +59,20 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    ...state.activeTab
+    ...state
   }
+}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      dispatchOnSwitchTab: (tabIndex) => {
-        dispatch(switchTab(tabIndex))
-      },
-      dispatchOnShowMiniPreview: (item) => {
-        dispatch(showMiniPreview(item))
-      }
-
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchOnSwitchTab: (tabIndex) => {
+      dispatch(switchTab(tabIndex))
+    },
+    dispatchOnShowMiniPreview: (item) => {
+      dispatch(showMiniPreview(item))
     }
   }
 }
 
-export default connect(mapStateToProps)(AsyncListContainer)
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)

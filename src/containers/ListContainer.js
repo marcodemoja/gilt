@@ -9,6 +9,7 @@ class ListContainer extends React.Component {
     items: PropTypes.arrayOf(itemProps),
     miniPreview: PropTypes.object,
     onShowMiniPreview: PropTypes.func,
+    dipatch: PropTypes.func
   }
 
   fetchItems() {
@@ -16,11 +17,11 @@ class ListContainer extends React.Component {
     let items = this.props.items
     for (let i in items) {
       itemsList.push(<List.Item>
-          <List.Content>
-            <List.Header as='h4'>Header</List.Header>
-            <List.Description><Image src='/assets/images/wireframe/short-paragraph.png' /></List.Description>
-          </List.Content>
-        </List.Item>)
+        <List.Content>
+          <List.Header as='h4'>Header</List.Header>
+          <List.Description><Image src='/assets/images/wireframe/short-paragraph.png' /></List.Description>
+        </List.Content>
+      </List.Item>)
     }
     return items
   }

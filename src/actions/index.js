@@ -1,5 +1,6 @@
-import { API_REQUEST_START, API_REQUEST_FAIL, API_REQUEST_SUCCESS, MINI_PREVIEW } from './types'
-import { fetchLatestGhipies } from '../endpoints'
+import { API_REQUEST_PUPPIES, API_FAIL_PUPPIES, API_SUCCESS_PUPPIES, API_REQUEST_KITTIES, API_FAIL_KITTIES, API_SUCCESS_KITTIES, SWITCH_TAB, MINI_PREVIEW } from './types'
+import { findGiphiesByQueryString } from '../endpoints'
+import fetch from 'isomorphic-fetch'
 
 /**
  * It creates the action
@@ -22,37 +23,44 @@ export const makeActionCreator = (type, ...argNames) => {
 /*
 Actions
 */
-export const startApiRequest = makeActionCreator(API_REQUEST_START, 'params')
+export const requestApiPuppies = makeActionCreator(API_REQUEST_PUPPIES, 'params')
 
-export const failApiRequest = makeActionCreator(API_REQUEST_FAIL, 'params')
+export const failApiPuppies = makeActionCreator(API_FAIL_PUPPIES, 'params')
 
-export const successApiRequest = makeActionCreator(API_REQUEST_SUCCESS, 'data')
+export const successApiPuppies = makeActionCreator(API_SUCCESS_PUPPIES, 'data')
+
+export const requestApiKitties = makeActionCreator(API_REQUEST_KITTIES, 'params')
+
+export const failApiKitties = makeActionCreator(API_FAIL_KITTIES, 'params')
+
+export const successApiKitties = makeActionCreator(API_SUCCESS_KITTIES, 'data')
 
 export const showMiniPreview = makeActionCreator(MINI_PREVIEW, 'item')
 
 export const switchTab = makeActionCreator(SWITCH_TAB, 'indexTab')
 
-export const fetchLatestGhipies = (params) => {
+
+export const fetchLatestGiphies = (type) => {
   return (dispatch, getState) => {
     const currentState = getState()
 
-    dispatch(startApiRequest(params))
+    dispatch(window['requestApi' + type](type))
 
-    if (currentState.hasOwnProperty(params.query)) {
-      if (currentState[params.query].length > 0) return dispatch(successApiRequest(currentState))
+    if (currentState.hasOwnProperty(type)) {
+      if (currentState[type].length > 0) return dispatch(window['successApi' + type](currentState))
 
-      return fetchLatestGhipies(params).then((response) => {
+      return findGiphiesByQueryString(type).then((response) => {
         if (response.status >= 400) {
-          throw new Error('bad response from server sending the following params: ' + params)
+          throw new Error('bad response from server sending the following params: ' + type)
         } else {
           return response.json()
         }
       }).then((data) => {
-        dispatch(successApiRequest(data))
+        dispatch(window['successApi' + type](data))
       })
 
     } else {
-      dispatch(failApiRequest(params))
+      dispatch(window['failApi' + type]())
     }
   }
 }
