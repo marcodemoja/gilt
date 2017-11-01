@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import itemProps from '../prop-types/itemProps'
-import { List } from 'semantic-ui-react'
+import { List, Image } from 'semantic-ui-react'
 
 class ListContainer extends React.Component {
 
@@ -16,14 +16,14 @@ class ListContainer extends React.Component {
     let itemsList = []
     let items = this.props.items
     for (let i in items) {
-      itemsList.push(<List.Item>
+      itemsList.push(<List.Item key={i}>
         <List.Content>
           <List.Header as='h4'>Header</List.Header>
           <List.Description><Image src='/assets/images/wireframe/short-paragraph.png' /></List.Description>
         </List.Content>
       </List.Item>)
     }
-    return items
+    return itemsList
   }
 
   componentDidMount() {

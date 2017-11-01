@@ -6,10 +6,10 @@ const itemProps = PropTypes.shape({
   slug: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   user: PropTypes.shape({
-    avatarUrl: PropTypes.string.isRequired,
-    bannerUrl: PropTypes.string.isRequired,
-    profileUrl: PropTypes.string.isRequired,
-    displayName: PropTypes.string.isRequired
+    avatarUrl: PropTypes.string,
+    bannerUrl: PropTypes.string,
+    profileUrl: PropTypes.string,
+    displayName: PropTypes.string
   })
 })
 

@@ -14,11 +14,13 @@ export default (state = initState, action) => {
         puppiesTabLoading: true,
         puppies: state.puppies || []
       })
+      break
     case 'API_SUCCESS_PUPPIES':
       return Object.assign({}, state, {
         puppiesTabLoading: false,
         puppies: action.data
       })
+      break
     case 'API_FAIL_PUPPIES':
       return Object.assign({}, state, {
         puppiesTabLoading: false,
@@ -30,11 +32,13 @@ export default (state = initState, action) => {
         kittiesTabLoading: true,
         kitties: state.kitties || []
       })
+      break
     case 'API_SUCCESS_KITTIES':
       return Object.assign({}, state, {
         kittiesTabLoading: false,
         kitties: action.data
       })
+      break
     case 'API_FAIL_KITTIES':
       return Object.assign({}, state, {
         kittiesTabLoading: false,
@@ -43,5 +47,6 @@ export default (state = initState, action) => {
       break
     default:
       return state
+      break
   }
 }

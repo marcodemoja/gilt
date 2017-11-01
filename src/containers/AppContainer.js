@@ -2,9 +2,10 @@ import React from 'react'
 import { Container, Header, Tab } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { switchTab, showMiniPreview, fetchLatestGiphies } from '../actions'
+import { switchTab, showMiniPreview, fetchLatestPuppies, fetchLatestKitties } from '../actions'
 import ListContainer from './ListContainer'
 import itemProps from '../prop-types/itemProps'
+import Pagination from 'rc-pagination'
 
 
 class AppContainer extends React.Component {
@@ -30,11 +31,17 @@ class AppContainer extends React.Component {
   tabPanes =[
     {
       menuItem: 'Puppies',
-      render: () => <Tab.Pane loading><ListContainer onLoadItems={this.onLoadPuppies} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} /></Tab.Pane>
+      render: () => <Tab.Pane loading>
+        <ListContainer onLoadItems={this.onLoadPuppies} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} />
+        <Pagination total={this.props.puppies.length} />
+      </Tab.Pane>
     },
     {
       menuItem: 'Kitties',
-      render: () => <Tab.Pane loading><ListContainer onLoadItems={this.onLoadKitties} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} /></Tab.Pane>
+      render: () => <Tab.Pane loading>
+        <ListContainer onLoadItems={this.onLoadKitties} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} />
+        <Pagination total={this.props.kitties.length} />
+      </Tab.Pane>
     }
   ]
 
@@ -79,10 +86,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(showMiniPreview(item))
     },
     dispatchOnLoadKitties: () => {
-      dispatch(fetchLatestGiphies('Kitties'))
+      dispatch(fetchLatestKitties())
     },
     dispatchOnLoadPuppies: () => {
-      dispatch(fetchLatestGiphies('Puppies'))
+      dispatch(fetchLatestPuppies())
     }
   }
 }
