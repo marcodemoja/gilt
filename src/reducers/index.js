@@ -1,5 +1,6 @@
 const initState = {
   isLoading: true,
+  activeTab: 1,
   puppies: [],
   kitties: [],
   miniPreview: {}

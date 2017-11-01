@@ -28,7 +28,8 @@
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "semantic-ui-react": "^0.75.1"
   },
   "scripts": {
     "start": "react-scripts start",
