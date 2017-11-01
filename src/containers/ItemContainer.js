@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import itemProps from '../prop-types/itemProps'
-import { Image, Item } from 'semantic-ui-react'
+import { Image, List } from 'semantic-ui-react'
 
 class ItemContainer extends React.Component {
 
@@ -10,19 +10,12 @@ class ItemContainer extends React.Component {
   }
 
   render() {
-    return (<div>
-          <Item>
-            <Item.Image size='tiny' src='' />
-            <Item.Content>
-              <Item.Header as='a'>Header</Item.Header>
-              <Item.Meta>Description</Item.Meta>
-              <Item.Description>
-                <Image src='/assets/images/wireframe/short-paragraph.png' />
-              </Item.Description>
-              <Item.Extra>Additional Details</Item.Extra>
-            </Item.Content>
-          </Item>
-        </div>)
+    return (<List.Item>
+          <List.Content>
+            <List.Header as='a'>Header</List.Header>
+            <List.Description><Image src='/assets/images/wireframe/short-paragraph.png' /></List.Description>
+          </List.Content>
+        </List.Item>)
   }
 }
 

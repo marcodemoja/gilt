@@ -1,9 +1,8 @@
 import React from 'react'
-import { Container, Divider, Tab } from 'semantic-ui-react'
+import { Container, Header, Tab } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { switchTab } from './actions'
-import { itemProps } from '../prop-types/itemProps'
 
 
 class App extends Component {
@@ -22,26 +21,22 @@ class App extends Component {
 
   static propTypes = {
     dispatchOnSwitchTab: React.PropTypes.func,
-    activeTab: PropTypes.number,
-    isLoading: PropTypes.bool,
-    puppies: PropTypes.arrayOf(itemProps),
-    kitties: PropTypes.arrayOf(itemProps),
+    activeTab: PropTypes.number
   }
-
-  componentDidMount() {}
-
-  componentWillReceiveProps() {}
 
   render() {
     const {activeTab} = this.props
 
-    return (<div><Tab panes={this.tabPanes} activeIndex={activeTab} onTabChange={this.handleSwitchTab} /></div>)
+    return (<div><Container fluid>
+      <Header as='h2'>Puppies & Kitties</Header>
+      <Tab panes={this.tabPanes} activeIndex={activeTab} onTabChange={this.handleSwitchTab} />
+    </Container></div>)
   }
 }
 
 function mapStateToProps(state) {
   return {
-    ...state
+    ...state.activeTab
   }
 
   function mapDispatchToProps(dispatch) {
