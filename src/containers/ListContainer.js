@@ -9,7 +9,7 @@ class ListContainer extends React.Component {
     items: PropTypes.arrayOf(itemProps),
     miniPreview: PropTypes.object,
     onShowMiniPreview: PropTypes.func,
-    dipatch: PropTypes.func
+    onLoadItems: PropTypes.func
   }
 
   fetchItems() {
@@ -24,6 +24,10 @@ class ListContainer extends React.Component {
       </List.Item>)
     }
     return items
+  }
+
+  componentDidMount() {
+    this.props.onLoadItems && this.props.onLoadItems()
   }
 
   render() {

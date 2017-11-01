@@ -40,14 +40,24 @@ export const showMiniPreview = makeActionCreator(MINI_PREVIEW, 'item')
 export const switchTab = makeActionCreator(SWITCH_TAB, 'indexTab')
 
 
+/*this is just a trick. by appending these actions to the window obj I can access to them dinamically into the fetchLatestGiphies actionCreator
+* so that I can dispatch actions dinamically  
+*/
+window.requestApiKitties = requestApiKitties
+window.requestApiPuppies = requestApiPuppies
+window.successApiKitties = successApiKitties
+window.successApiPuppies = successApiPuppies
+window.failApiPuppies = failApiPuppies
+window.failApiKitties = failApiKitties
+
 export const fetchLatestGiphies = (type) => {
   return (dispatch, getState) => {
     const currentState = getState()
-
+    let propStateName = type.toLowerCase()
     dispatch(window['requestApi' + type](type))
 
-    if (currentState.hasOwnProperty(type)) {
-      if (currentState[type].length > 0) return dispatch(window['successApi' + type](currentState))
+    if (currentState.hasOwnProperty(propStateName)) {
+      if (currentState[propStateName].length > 0) return dispatch(window['successApi' + type](currentState))
 
       return findGiphiesByQueryString(type).then((response) => {
         if (response.status >= 400) {

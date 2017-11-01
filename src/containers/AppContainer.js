@@ -10,10 +10,11 @@ import itemProps from '../prop-types/itemProps'
 class AppContainer extends React.Component {
 
   static propTypes = {
+    dispatch: PropTypes.func,
     dispatchOnSwitchTab: PropTypes.func,
     dispatchOnShowMiniPreview: PropTypes.func,
-    dispatchRequestPuppies: PropTypes.func,
-    dispatchRequestKitties: PropTypes.func,
+    dispatchOnLoadPuppies: PropTypes.func,
+    dispatchOnLoadKitties: PropTypes.func,
     activeTab: PropTypes.number,
     puppies: PropTypes.arrayOf(itemProps),
     kitties: PropTypes.arrayOf(itemProps)
@@ -22,16 +23,18 @@ class AppContainer extends React.Component {
   constructor(props) {
     super(props);
     this.handleSwitchTab = this._handleSwitchTab.bind(this)
+    this.onLoadKitties = this._onLoadKitties.bind(this)
+    this.onLoadPuppies = this._onLoadPuppies.bind(this)
   }
 
   tabPanes =[
     {
       menuItem: 'Puppies',
-      render: () => <Tab.Pane loading><ListContainer onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} /></Tab.Pane>
+      render: () => <Tab.Pane loading><ListContainer onLoadItems={this.onLoadPuppies} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} /></Tab.Pane>
     },
     {
       menuItem: 'Kitties',
-      render: () => <Tab.Pane loading><ListContainer onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} /></Tab.Pane>
+      render: () => <Tab.Pane loading><ListContainer onLoadItems={this.onLoadKitties} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} /></Tab.Pane>
     }
   ]
 
@@ -43,8 +46,12 @@ class AppContainer extends React.Component {
     this.props.dispatchOnShowMiniPreview(previewObj)
   }
 
-  componentDidMount() {
-    fetchLatestGiphies('Puppies')
+  _onLoadPuppies() {
+    this.props.dispatchOnLoadPuppies()
+  }
+
+  _onLoadKitties() {
+    this.props.dispatchOnLoadKitties()
   }
 
   render() {
@@ -70,6 +77,12 @@ function mapDispatchToProps(dispatch) {
     },
     dispatchOnShowMiniPreview: (item) => {
       dispatch(showMiniPreview(item))
+    },
+    dispatchOnLoadKitties: () => {
+      dispatch(fetchLatestGiphies('Kitties'))
+    },
+    dispatchOnLoadPuppies: () => {
+      dispatch(fetchLatestGiphies('Puppies'))
     }
   }
 }
