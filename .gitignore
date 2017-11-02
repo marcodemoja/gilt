@@ -1,1 +1,7 @@
 node_modules
+public/app.js.map
+public/app.map
+public/app.css
+public/app.min.js
+public/vendors.min.js
+public/vendors.js.map

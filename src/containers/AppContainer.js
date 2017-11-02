@@ -1,11 +1,12 @@
 import React from 'react'
-import { Container, Header, Tab } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { switchTab, showMiniPreview, fetchLatestGiphies } from '../actions'
 import ListContainer from './ListContainer'
 import itemProps from '../prop-types/itemProps'
 import Pagination from 'rc-pagination'
+import Tab from '../components/Tab'
+import TabPane from '../components/TabPane'
 
 
 class AppContainer extends React.Component {
@@ -30,26 +31,6 @@ class AppContainer extends React.Component {
     this.onLoadPuppies = this._onLoadPuppies.bind(this)
   }
 
-  renderPuppiesList() {
-    return <ListContainer onLoadItems={this.onLoadPuppies} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} />
-  }
-
-  tabPanes =[
-    {
-      menuItem: 'Puppies',
-      render: () => <Tab.Pane as={this.renderPuppiesList} loading={this.props.puppiesTabLoading}>
-        <Pagination total={this.props.puppies.length} />
-      </Tab.Pane>
-    },
-    {
-      menuItem: 'Kitties',
-      render: () => <Tab.Pane loading={this.props.kittiesTabLoading}>
-        <ListContainer onLoadItems={this.onLoadKitties} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} />
-        <Pagination total={this.props.kitties.length} />
-      </Tab.Pane>
-    }
-  ]
-
   _handleSwitchTab(e, activeTab) {
     if (activeTab.activeIndex == 0)
       this.props.dispatchOnLoadPuppies()
@@ -72,10 +53,9 @@ class AppContainer extends React.Component {
   render() {
     const {activeTab} = this.props
 
-    return (<div><Container fluid>
-      <Header as='h2'>Puppies & Kitties</Header>
-      <Tab panes={this.tabPanes} activeIndex={activeTab} />
-    </Container></div>)
+    return (<div>
+        <Tab></Tab>
+      </div>)
   }
 }
 

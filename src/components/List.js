@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import itemProps from '../prop-types/itemProps'
-import { List, Image } from 'semantic-ui-react'
 
-class ListContainer extends React.Component {
+class List extends React.Component {
 
   static propTypes = {
     items: PropTypes.arrayOf(itemProps),
@@ -15,12 +14,7 @@ class ListContainer extends React.Component {
   fetchItems() {
     let items = this.props.items
     let itemsList = items.map((items, i) => {
-      return <List.Item key={i}>
-        <List.Content>
-          <List.Header as='h4'>Header</List.Header>
-          <List.Description><Image src='/assets/images/wireframe/short-paragraph.png' /></List.Description>
-        </List.Content>
-      </List.Item>
+      return <div className='items'></div>
     })
     return itemsList
   }
@@ -30,8 +24,8 @@ class ListContainer extends React.Component {
   }
 
   render() {
-    return (<List>{this.fetchItems()}</List>)
+    return (<div>{this.fetchItems()}</div>)
   }
 }
 
-export default ListContainer
+export default List
