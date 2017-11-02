@@ -13,16 +13,15 @@ class ListContainer extends React.Component {
   }
 
   fetchItems() {
-    let itemsList = []
     let items = this.props.items
-    for (let i in items) {
-      itemsList.push(<List.Item key={i}>
+    let itemsList = items.map((items, i) => {
+      return <List.Item key={i}>
         <List.Content>
           <List.Header as='h4'>Header</List.Header>
           <List.Description><Image src='/assets/images/wireframe/short-paragraph.png' /></List.Description>
         </List.Content>
-      </List.Item>)
-    }
+      </List.Item>
+    })
     return itemsList
   }
 

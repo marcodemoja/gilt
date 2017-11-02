@@ -50,12 +50,12 @@ window.successApiPuppies = successApiPuppies
 window.failApiPuppies = failApiPuppies
 window.failApiKitties = failApiKitties
 
-const fetchLatestGiphies = (type) => {
+export const fetchLatestGiphies = (type) => {
   return (dispatch, getState) => {
     const currentState = getState()
     let propStateName = type.toLowerCase()
     dispatch(window['requestApi' + type](type))
-    console.log(type)
+
     if (currentState.hasOwnProperty(propStateName)) {
       if (currentState[propStateName].length > 0) return dispatch(window['successApi' + type](currentState))
 
@@ -66,6 +66,7 @@ const fetchLatestGiphies = (type) => {
           return response.json()
         }
       }).then((data) => {
+        console.log(data.data)
         dispatch(window['successApi' + type](data.data))
       })
 
@@ -73,12 +74,4 @@ const fetchLatestGiphies = (type) => {
       dispatch(window['failApi' + type]())
     }
   }
-}
-
-export const fetchLatestPuppies = (type) => {
-  return fetchLatestGiphies('Puppies')
-}
-
-export const fetchLatestKitties = (type) => {
-  return fetchLatestGiphies('Kitties')
 }

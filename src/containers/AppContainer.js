@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Header, Tab } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { switchTab, showMiniPreview, fetchLatestPuppies, fetchLatestKitties } from '../actions'
+import { switchTab, showMiniPreview, fetchLatestGiphies } from '../actions'
 import ListContainer from './ListContainer'
 import itemProps from '../prop-types/itemProps'
 import Pagination from 'rc-pagination'
@@ -18,7 +18,9 @@ class AppContainer extends React.Component {
     dispatchOnLoadKitties: PropTypes.func,
     activeTab: PropTypes.number,
     puppies: PropTypes.arrayOf(itemProps),
-    kitties: PropTypes.arrayOf(itemProps)
+    kitties: PropTypes.arrayOf(itemProps),
+    kittiesTabLoading: PropTypes.bool,
+    puppiesTabLoading: PropTypes.bool
   }
 
   constructor(props) {
@@ -28,25 +30,31 @@ class AppContainer extends React.Component {
     this.onLoadPuppies = this._onLoadPuppies.bind(this)
   }
 
+  renderPuppiesList() {
+    return <ListContainer onLoadItems={this.onLoadPuppies} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} />
+  }
+
   tabPanes =[
     {
       menuItem: 'Puppies',
-      render: () => <Tab.Pane loading>
-        <ListContainer onLoadItems={this.onLoadPuppies} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.puppies} />
+      render: () => <Tab.Pane as={this.renderPuppiesList} loading={this.props.puppiesTabLoading}>
         <Pagination total={this.props.puppies.length} />
       </Tab.Pane>
     },
     {
       menuItem: 'Kitties',
-      render: () => <Tab.Pane loading>
+      render: () => <Tab.Pane loading={this.props.kittiesTabLoading}>
         <ListContainer onLoadItems={this.onLoadKitties} onShowMiniPreview={this.handleShowMiniPreview} items={this.props.kitties} />
         <Pagination total={this.props.kitties.length} />
       </Tab.Pane>
     }
   ]
 
-  _handleSwitchTab(e, {activeTab}) {
-    this.props.dispatchOnSwitchTab(activeTab)
+  _handleSwitchTab(e, activeTab) {
+    if (activeTab.activeIndex == 0)
+      this.props.dispatchOnLoadPuppies()
+    else
+      this.props.dispatchOnLoadKitties()
   }
 
   handleShowMiniPreview(e, {previewObj}) {
@@ -66,7 +74,7 @@ class AppContainer extends React.Component {
 
     return (<div><Container fluid>
       <Header as='h2'>Puppies & Kitties</Header>
-      <Tab panes={this.tabPanes} activeIndex={activeTab} onTabChange={this.handleSwitchTab} />
+      <Tab panes={this.tabPanes} activeIndex={activeTab} />
     </Container></div>)
   }
 }
@@ -86,10 +94,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(showMiniPreview(item))
     },
     dispatchOnLoadKitties: () => {
-      dispatch(fetchLatestKitties())
+      dispatch(fetchLatestGiphies('Kitties'))
     },
     dispatchOnLoadPuppies: () => {
-      dispatch(fetchLatestPuppies())
+      dispatch(fetchLatestGiphies('Puppies'))
     }
   }
 }
