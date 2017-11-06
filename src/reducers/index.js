@@ -1,7 +1,7 @@
 const initState = {
   puppiesTabLoading: true,
   kittiesTabLoading: true,
-  activeTab: 0,
+  activePane: 0,
   puppies: [],
   kitties: [],
   miniPreview: {}

@@ -2,11 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { switchTab, showMiniPreview, fetchLatestGiphies } from '../actions'
-import ListContainer from './ListContainer'
 import itemProps from '../prop-types/itemProps'
 import Pagination from 'rc-pagination'
-import Tab from '../components/Tab'
-import TabPane from '../components/TabPane'
+import TabContainer from './TabContainer'
 
 
 class AppContainer extends React.Component {
@@ -17,7 +15,7 @@ class AppContainer extends React.Component {
     dispatchOnShowMiniPreview: PropTypes.func,
     dispatchOnLoadPuppies: PropTypes.func,
     dispatchOnLoadKitties: PropTypes.func,
-    activeTab: PropTypes.number,
+    activePane: PropTypes.number,
     puppies: PropTypes.arrayOf(itemProps),
     kitties: PropTypes.arrayOf(itemProps),
     kittiesTabLoading: PropTypes.bool,
@@ -54,8 +52,13 @@ class AppContainer extends React.Component {
     const {activeTab} = this.props
 
     return (<div>
-        <Tab></Tab>
-      </div>)
+      <TabContainer
+      onLoadPuppies={this.onLoadPuppies}
+      onLoadKitties={this.onLoadKitties}
+      kitties={this.props.kitties}
+      puppies={this.props.puppies}
+      activePane={this.props.activePane} />
+    </div>)
   }
 }
 

@@ -46,7 +46,7 @@ module.exports = {
   output: {
     filename: '[name].min.js',
     path: path.resolve(__dirname, '../public/'),
-    publicPath: '../public/'
+    publicPath: '/src/'
   },
   plugins: [
     new BrowserSyncPlugin({
